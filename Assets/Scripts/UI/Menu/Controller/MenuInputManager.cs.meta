@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 92e926199c99c3d4790c6289d082a10c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - inputA: {fileID: -2929160565094855328, guid: d29805f34fe91da4e94010a38823fab7,
+      type: 3}
+  - inputB: {fileID: -7483438081576239459, guid: d29805f34fe91da4e94010a38823fab7,
+      type: 3}
+  - inputX: {fileID: -1252144306501977126, guid: d29805f34fe91da4e94010a38823fab7,
+      type: 3}
+  - inputY: {fileID: -1889030953071148565, guid: d29805f34fe91da4e94010a38823fab7,
+      type: 3}
+  - inputStart: {fileID: 4730139168499446704, guid: d29805f34fe91da4e94010a38823fab7,
+      type: 3}
+  - blockedObject: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
