@@ -42,20 +42,23 @@ public class LooseCoin : Coin {
             return;
         }
 
+        if (!Object)
+            return;
+
         bool inWall = Utils.IsAnyTileSolidBetweenWorldBox(body.position + hitbox.offset, hitbox.size * transform.lossyScale * 0.75f);
         gameObject.layer = inWall ? Layers.LayerHitsNothing : Layers.LayerEntity;
 
-        physics.UpdateCollisions();
-        if (physics.OnGround) {
+        PhysicsEntity.PhysicsDataStruct data = physics.UpdateCollisions();
+        if (data.OnGround) {
             body.velocity -= body.velocity * Runner.DeltaTime;
-            if (physics.HitRoof) {
+            if (data.HitRoof) {
                 Runner.Despawn(Object);
                 return;
             }
 
             // TODO: doesn't always trigger, even for host. Strange.
             // IsForward is ok, the sound isnt top priority
-            if (Runner.IsForward && physics.PreviousTickVelocity.y < -0.5f * (Mathf.Sin(physics.FloorAngle) + 1f))
+            if (Runner.IsForward && physics.previousTickVelocity.y < -0.5f * (Mathf.Sin(physics.Data.FloorAngle) + 1f))
                 PlaySound(Enums.Sounds.World_Coin_Drop);
         }
 

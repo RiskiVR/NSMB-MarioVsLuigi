@@ -38,6 +38,7 @@ public abstract class BasicEntity : NetworkBehaviour, IBlockBumpable {
         GameManager.Instance.networkObjects.Add(Object);
         if (isRespawningEntity)
             DespawnEntity();
+        OnFacingRightChanged();
     }
 
     public override void FixedUpdateNetwork() {
@@ -75,7 +76,7 @@ public abstract class BasicEntity : NetworkBehaviour, IBlockBumpable {
         IsActive = true;
     }
 
-    public virtual void DespawnEntity() {
+    public virtual void DespawnEntity(object data = null) {
         if (!isRespawningEntity) {
             Runner.Despawn(Object);
             return;

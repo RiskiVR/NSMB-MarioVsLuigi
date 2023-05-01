@@ -12,8 +12,8 @@ using TMPro;
 using Fusion;
 using NSMB.Extensions;
 using NSMB.Tiles;
-using NSMB.Utils;
 using NSMB.Translation;
+using NSMB.Utils;
 
 public class GameManager : NetworkBehaviour {
 
@@ -128,17 +128,17 @@ public class GameManager : NetworkBehaviour {
 
     // Register pause & networking events
     public void OnEnable() {
-        ControlSystem.controls.UI.Pause.performed +=        OnPause;
+        ControlSystem.controls.UI.Pause.performed += OnPause;
         ControlSystem.controls.Debug.ToggleHUD.performed += OnToggleHud;
-        NetworkHandler.OnShutdown +=     OnShutdown;
-        NetworkHandler.OnPlayerLeft +=   OnPlayerLeft;
+        NetworkHandler.OnShutdown += OnShutdown;
+        NetworkHandler.OnPlayerLeft += OnPlayerLeft;
     }
 
     public void OnDisable() {
-        ControlSystem.controls.UI.Pause.performed -=        OnPause;
+        ControlSystem.controls.UI.Pause.performed -= OnPause;
         ControlSystem.controls.Debug.ToggleHUD.performed -= OnToggleHud;
-        NetworkHandler.OnShutdown -=     OnShutdown;
-        NetworkHandler.OnPlayerLeft -=   OnPlayerLeft;
+        NetworkHandler.OnShutdown -= OnShutdown;
+        NetworkHandler.OnPlayerLeft -= OnPlayerLeft;
     }
 
     public void OnValidate() {
@@ -171,11 +171,8 @@ public class GameManager : NetworkBehaviour {
         // By default, spectate. when we get assigned a player object, we disable it there.
         spectationManager.Spectating = true;
 
-        // Eregednable player controls
+        // Enable player controls
         Runner.ProvideInput = true;
-
-        // Setup respawning tilemap
-        tilemap.RefreshAllTiles();
 
         // Find objects in the scene
         starSpawns = GameObject.FindGameObjectsWithTag("StarSpawn");
@@ -209,6 +206,33 @@ public class GameManager : NetworkBehaviour {
             runner.Despawn(obj);
     }
 
+    public override void Render() {
+        // Handle sound effects for the timer, if it's enabled
+        if (GameEndTimer.IsRunning) {
+            if (GameEndTimer.Expired(Runner)) {
+                sfx.PlayOneShot(Enums.Sounds.UI_Countdown_1);
+                return;
+            }
+
+            int tickrate = Runner.Config.Simulation.TickRate;
+            int remainingTicks = GameEndTimer.RemainingTicks(Runner) ?? 0;
+
+            if (!hurryUpSoundPlayed && remainingTicks < 60 * tickrate) {
+                //60 second warning
+                hurryUpSoundPlayed = true;
+                sfx.PlayOneShot(Enums.Sounds.UI_HurryUp);
+            } else if (remainingTicks < (10 * tickrate)) {
+                //10 second "dings"
+                if (remainingTicks % tickrate == 0)
+                    sfx.PlayOneShot(Enums.Sounds.UI_Countdown_0);
+
+                //at 3 seconds, double speed
+                if (remainingTicks < (3 * tickrate) && remainingTicks % (tickrate / 2) == 0)
+                    sfx.PlayOneShot(Enums.Sounds.UI_Countdown_0);
+            }
+        }
+    }
+
     public override void FixedUpdateNetwork() {
         if (GameEnded)
             return;
@@ -236,33 +260,9 @@ public class GameManager : NetworkBehaviour {
         if (IsMusicEnabled)
             HandleMusic();
 
-        // Handle sound effects for the timer, if it's enabled
-        if (GameEndTimer.IsRunning) {
-            if (GameEndTimer.Expired(Runner)) {
-                CheckForWinner();
-
-                //time end sfx
-                sfx.PlayOneShot(Enums.Sounds.UI_Countdown_1);
-                GameEndTimer = TickTimer.None;
-                return;
-            }
-
-            int tickrate = Runner.Config.Simulation.TickRate;
-            int remainingTicks = GameEndTimer.RemainingTicks(Runner) ?? 0;
-
-            if (!hurryUpSoundPlayed && remainingTicks < 60 * tickrate) {
-                //60 second warning
-                hurryUpSoundPlayed = true;
-                sfx.PlayOneShot(Enums.Sounds.UI_HurryUp);
-            } else if (remainingTicks < (10 * tickrate)) {
-                //10 second "dings"
-                if (remainingTicks % tickrate == 0)
-                    sfx.PlayOneShot(Enums.Sounds.UI_Countdown_0);
-
-                //at 3 seconds, double speed
-                if (remainingTicks < (3 * tickrate) && remainingTicks % (tickrate / 2) == 0)
-                    sfx.PlayOneShot(Enums.Sounds.UI_Countdown_0);
-            }
+        if (GameEndTimer.Expired(Runner)) {
+            CheckForWinner();
+            GameEndTimer = TickTimer.None;
         }
     }
 
