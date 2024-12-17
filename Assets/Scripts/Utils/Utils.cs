@@ -1,589 +1,243 @@
+using NSMB.UI.Game;
+using Quantum;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-
-using Photon.Pun;
-using Photon.Realtime;
 
 namespace NSMB.Utils {
     public class Utils {
 
-        public static int FirstPlaceStars {
-            get => GameManager.Instance.players.Where(pl => pl.lives != 0).Max(pc => pc.stars);
+        public static bool BitTest(long v, int index) {
+            return (v & (1L << index)) != 0;
         }
 
-        public static bool BitTest(long bit, int index) {
-            return (bit & (1 << index)) != 0;
+        public static bool BitTest(ulong v, int index) {
+            return (v & (1UL << index)) != 0;
         }
 
-        public static Vector3Int WorldToTilemapPosition(Vector3 worldVec, GameManager manager = null, bool wrap = true) {
-            if (!manager)
-                manager = GameManager.Instance;
-
-            Vector3Int tileLocation = manager.tilemap.WorldToCell(worldVec);
-            if (wrap)
-                WrapTileLocation(ref tileLocation, manager);
-
-            return tileLocation;
-        }
-
-        public static bool WrapWorldLocation(ref Vector3 location, GameManager manager = null) {
-            if (manager == null)
-                manager = GameManager.Instance;
-
-            if (!manager.loopingLevel)
-                return false;
-
-            if (location.x < manager.GetLevelMinX()) {
-                location.x += manager.levelWidthTile / 2;
-                return true;
-            } else if (location.x >= manager.GetLevelMaxX()) {
-                location.x -= manager.levelWidthTile / 2;
-                return true;
-            }
-            return false;
-        }
-
-        public static void WrapTileLocation(ref Vector3Int tileLocation, GameManager manager = null) {
-            if (manager == null)
-                manager = GameManager.Instance;
-
-            if (!manager.loopingLevel)
-                return;
-
-            if (tileLocation.x < manager.levelMinTileX) {
-                tileLocation.x += manager.levelWidthTile;
-            } else if (tileLocation.x >= manager.levelMinTileX + manager.levelWidthTile) {
-                tileLocation.x -= manager.levelWidthTile;
-            }
-        }
-
-        public static Vector3Int WorldToTilemapPosition(float worldX, float worldY) {
-            return WorldToTilemapPosition(new Vector3(worldX, worldY));
-        }
-
-        public static Vector3 TilemapToWorldPosition(Vector3Int tileVec, GameManager manager = null) {
-            if (!manager)
-                manager = GameManager.Instance;
-            return manager.tilemap.CellToWorld(tileVec);
-        }
-
-        public static Vector3 TilemapToWorldPosition(int tileX, int tileY) {
-            return TilemapToWorldPosition(new Vector3Int(tileX, tileY));
-        }
-
-        public static int GetCharacterIndex(Player player = null) {
-            if (player == null)
-                player = PhotonNetwork.LocalPlayer;
-
-            //Assert.IsNotNull(player, "player is null, are we not connected to Photon?");
-
-            GetCustomProperty(Enums.NetPlayerProperties.Character, out int index, player.CustomProperties);
-            return index;
-        }
-        public static PlayerData GetCharacterData(Player player = null) {
-            return GlobalController.Instance.characters[GetCharacterIndex(player)];
-        }
-
-        public static TileBase GetTileAtTileLocation(Vector3Int tileLocation) {
-            WrapTileLocation(ref tileLocation);
-            return GameManager.Instance.tilemap.GetTile(tileLocation);
-        }
-        public static TileBase GetTileAtWorldLocation(Vector3 worldLocation) {
-            return GetTileAtTileLocation(WorldToTilemapPosition(worldLocation));
-        }
-
-        public static bool IsTileSolidAtTileLocation(Vector3Int tileLocation) {
-            WrapTileLocation(ref tileLocation);
-            return GetColliderType(tileLocation) == Tile.ColliderType.Grid;
-        }
-
-        private static Tile.ColliderType GetColliderType(Vector3Int tileLocation) {
-
-            Tilemap tm = GameManager.Instance.tilemap;
-
-            if (tm.GetTile<Tile>(tileLocation) is Tile tile)
-                return tile.colliderType;
-
-            if (tm.GetTile<RuleTile>(tileLocation) is RuleTile rule)
-                return rule.m_DefaultColliderType;
-
-            if (tm.GetTile<AnimatedTile>(tileLocation) is AnimatedTile animated)
-                return animated.m_TileColliderType;
-
-            return Tile.ColliderType.None;
-        }
-
-        public static bool IsTileSolidBetweenWorldBox(Vector3Int tileLocation, Vector2 worldLocation, Vector2 worldBox, bool boxcast = true) {
-            if (boxcast) {
-                Collider2D collision = Physics2D.OverlapPoint(worldLocation, LayerMask.GetMask("Ground"));
-                if (collision && !collision.isTrigger && !collision.CompareTag("Player"))
-                    return true;
-            }
-
-            Vector2 ogWorldLocation = worldLocation;
-            while (GetTileAtTileLocation(tileLocation) is TileInteractionRelocator it) {
-                worldLocation += (Vector2) (Vector3) it.offset * 0.5f;
-                tileLocation += it.offset;
-            }
-
-            Matrix4x4 tileTransform = GameManager.Instance.tilemap.GetTransformMatrix(tileLocation);
-
-            Vector2 halfBox = worldBox * 0.5f;
-            List<Vector2> boxPoints = new();
-            boxPoints.Add(ogWorldLocation + Vector2.up * halfBox + Vector2.right * halfBox); // ++
-            boxPoints.Add(ogWorldLocation + Vector2.up * halfBox + Vector2.left * halfBox); // +-
-            boxPoints.Add(ogWorldLocation + Vector2.down * halfBox + Vector2.left * halfBox); // --
-            boxPoints.Add(ogWorldLocation + Vector2.down * halfBox + Vector2.right * halfBox); // -+
-
-            Sprite sprite = GameManager.Instance.tilemap.GetSprite(tileLocation);
-            switch (GetColliderType(tileLocation)) {
-            case Tile.ColliderType.Grid:
-                return true;
-            case Tile.ColliderType.None:
-                return false;
-            case Tile.ColliderType.Sprite:
-
-                for (int i = 0; i < sprite.GetPhysicsShapeCount(); i++) {
-                    List<Vector2> points = new();
-                    sprite.GetPhysicsShape(i, points);
-
-                    for (int j = 0; j < points.Count; j++) {
-                        Vector2 point = points[j];
-                        point *= 0.5f;
-                        point = tileTransform.MultiplyPoint(point);
-                        point += (Vector2) (Vector3) tileLocation * 0.5f;
-                        point += (Vector2) GameManager.Instance.tilemap.transform.position;
-                        point += Vector2.one * 0.25f;
-                        points[j] = point;
-                    }
-
-                    for (int j = 0; j < points.Count; j++) {
-                        Debug.DrawLine(points[j], points[(j + 1) % points.Count], Color.white, 10);
-                    }
-                    for (int j = 0; j < boxPoints.Count; j++) {
-                        Debug.DrawLine(boxPoints[j], boxPoints[(j + 1) % boxPoints.Count], Color.blue, 3);
-                    }
-
-
-                    if (PolygonsOverlap(points, boxPoints))
-                        return true;
-                }
-                return false;
-            }
-
-            return IsTileSolidAtTileLocation(WorldToTilemapPosition(worldLocation));
-        }
-
-        public static bool PolygonsOverlap(List<Vector2> polygonA, List<Vector2> polygonB) {
-            int edgeCountA = polygonA.Count;
-            int edgeCountB = polygonB.Count;
-
-            // Loop through all the edges of both polygons
-            for (int i = 0; i < edgeCountA; i++) {
-                if (IsInside(polygonB, polygonA[i]))
-                    return true;
-            }
-
-            for (int i = 0; i < edgeCountB; i++) {
-                if (IsInside(polygonA, polygonB[i]))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsTileSolidAtWorldLocation(Vector3 worldLocation) {
-            Collider2D collision = Physics2D.OverlapPoint(worldLocation, LayerMask.GetMask("Ground"));
-            if (collision && !collision.isTrigger && !collision.CompareTag("Player"))
-                return true;
-
-            while (GetTileAtWorldLocation(worldLocation) is TileInteractionRelocator it)
-                worldLocation += (Vector3) it.offset * 0.5f;
-
-            Vector3Int tileLocation = WorldToTilemapPosition(worldLocation);
-            Matrix4x4 tileTransform = GameManager.Instance.tilemap.GetTransformMatrix(tileLocation);
-
-            Sprite sprite = GameManager.Instance.tilemap.GetSprite(tileLocation);
-            switch (GetColliderType(tileLocation)) {
-            case Tile.ColliderType.Grid:
-                return true;
-            case Tile.ColliderType.None:
-                return false;
-            case Tile.ColliderType.Sprite:
-                for (int i = 0; i < sprite.GetPhysicsShapeCount(); i++) {
-                    List<Vector2> points = new();
-                    sprite.GetPhysicsShape(i, points);
-
-                    for (int j = 0; j < points.Count; j++) {
-                        Vector2 point = points[j];
-                        point *= 0.5f;
-                        point = tileTransform.MultiplyPoint(point);
-                        point += (Vector2) (Vector3) tileLocation * 0.5f;
-                        point += (Vector2) GameManager.Instance.tilemap.transform.position;
-                        point += Vector2.one * 0.25f;
-                        points[j] = point;
-                    }
-
-                    if (IsInside(points, worldLocation))
-                        return true;
-                }
-                return false;
-            }
-
-            return IsTileSolidAtTileLocation(WorldToTilemapPosition(worldLocation));
-        }
-
-        // Given three collinear points p, q, r,
-        // the function checks if point q lies
-        // on line segment 'pr'
-        static bool OnSegment(Vector2 p, Vector2 q, Vector2 r) {
-            if (q.x <= Mathf.Max(p.x, r.x) &&
-                q.x >= Mathf.Min(p.x, r.x) &&
-                q.y <= Mathf.Max(p.y, r.y) &&
-                q.y >= Mathf.Min(p.y, r.y)) {
-                return true;
-            }
-            return false;
-        }
-
-        // To find orientation of ordered triplet (p, q, r).
-        // The function returns following values
-        // 0 --> p, q and r are collinear
-        // 1 --> Clockwise
-        // 2 --> Counterclockwise
-        static float Orientation(Vector2 p, Vector2 q, Vector2 r) {
-            float val = (q.y - p.y) * (r.x - q.x) -
-                    (q.x - p.x) * (r.y - q.y);
-
-            if (Mathf.Abs(val) < 0.001f) {
-                return 0; // collinear
-            }
-            return (val > 0) ? 1 : 2; // clock or counterclock wise
-        }
-
-        // The function that returns true if
-        // line segment 'p1q1' and 'p2q2' intersect.
-        static bool DoIntersect(Vector2 p1, Vector2 q1,
-                                Vector2 p2, Vector2 q2) {
-            // Find the four orientations needed for
-            // general and special cases
-            float o1 = Orientation(p1, q1, p2);
-            float o2 = Orientation(p1, q1, q2);
-            float o3 = Orientation(p2, q2, p1);
-            float o4 = Orientation(p2, q2, q1);
-
-            // General case
-            if (o1 != o2 && o3 != o4) {
-                return true;
-            }
-
-            // Special Cases
-            // p1, q1 and p2 are collinear and
-            // p2 lies on segment p1q1
-            if (o1 == 0 && OnSegment(p1, p2, q1)) {
-                return true;
-            }
-
-            // p1, q1 and p2 are collinear and
-            // q2 lies on segment p1q1
-            if (o2 == 0 && OnSegment(p1, q2, q1)) {
-                return true;
-            }
-
-            // p2, q2 and p1 are collinear and
-            // p1 lies on segment p2q2
-            if (o3 == 0 && OnSegment(p2, p1, q2)) {
-                return true;
-            }
-
-            // p2, q2 and q1 are collinear and
-            // q1 lies on segment p2q2
-            if (o4 == 0 && OnSegment(p2, q1, q2)) {
-                return true;
-            }
-
-            // Doesn't fall in any of the above cases
-            return false;
-        }
-
-        // Returns true if the point p lies
-        // inside the polygon[] with n vertices
-        static bool IsInside(List<Vector2> polygon, Vector2 p) {
-            // There must be at least 3 vertices in polygon[]
-            if (polygon.Count < 3) {
-                return false;
-            }
-
-            // Create a point for line segment from p to infinite
-            Vector2 extreme = new(1000, p.y);
-
-            // Count intersections of the above line
-            // with sides of polygon
-            int count = 0, i = 0;
-            do {
-                int next = (i + 1) % polygon.Count;
-
-                // Check if the line segment from 'p' to
-                // 'extreme' intersects with the line
-                // segment from 'polygon[i]' to 'polygon[next]'
-                if (DoIntersect(polygon[i],
-                                polygon[next], p, extreme)) {
-                    // If the point 'p' is collinear with line
-                    // segment 'i-next', then check if it lies
-                    // on segment. If it lies, return true, otherwise false
-                    if (Orientation(polygon[i], p, polygon[next]) == 0) {
-                        return OnSegment(polygon[i], p,
-                                        polygon[next]);
-                    }
-                    count++;
-                }
-                i = next;
-            } while (i != 0);
-
-            // Return true if count is odd, false otherwise
-            return (count % 2 == 1); // Same as (count%2 == 1)
-        }
-
-        public static bool IsAnyTileSolidBetweenWorldBox(Vector2 checkPosition, Vector2 checkSize, bool boxcast = true) {
-            Vector3Int minPos = WorldToTilemapPosition(checkPosition - (checkSize / 2), wrap: false);
-            Vector3Int size = WorldToTilemapPosition(checkPosition + (checkSize / 2), wrap: false) - minPos;
-
-            for (int x = 0; x <= size.x; x++) {
-                for (int y = 0; y <= size.y; y++) {
-
-                    Vector3Int tileLocation = new(minPos.x + x, minPos.y + y, 0);
-                    WrapTileLocation(ref tileLocation);
-
-                    if (IsTileSolidBetweenWorldBox(tileLocation, checkPosition, checkSize, boxcast))
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        public static float WrappedDistance(Vector2 a, Vector2 b) {
-            GameManager gm = GameManager.Instance;
-            if ((gm?.loopingLevel ?? false) && Mathf.Abs(a.x - b.x) > gm.levelWidthTile / 4f)
-                a.x -= gm.levelWidthTile / 2f * Mathf.Sign(a.x - b.x);
-
-            return Vector2.Distance(a, b);
-        }
-
-        public static bool GetCustomProperty<T>(string key, out T value, ExitGames.Client.Photon.Hashtable properties = null) {
-            if (properties == null)
-                properties = PhotonNetwork.CurrentRoom.CustomProperties;
-            if (properties == null) {
-                value = default;
-                return false;
-            }
-
-            properties.TryGetValue(key, out object temp);
-            if (temp != null) {
-                value = (T) temp;
-                return true;
+        public static void BitSet(ref byte v, int index, bool value) {
+            if (value) {
+                v |= (byte) (1 << index);
             } else {
-                value = default;
-                return false;
+                v &= (byte) ~(1 << index);
             }
         }
 
-        public static Powerup[] powerups = null;
-        // MAX(0,$B15+(IF(stars behind >0,LOG(B$1+1, 2.71828),0)*$C15*(1-(($M$15-$M$14))/$M$15)))
-        public static Powerup GetRandomItem(PlayerController player) {
-            GameManager gm = GameManager.Instance;
-
-            // "losing" variable based on ln(x+1), x being the # of stars we're behind
-            int ourStars = player.stars;
-            int leaderStars = FirstPlaceStars;
-
-            if (powerups == null)
-                powerups = Resources.LoadAll<Powerup>("Scriptables/Powerups");
-
-            GetCustomProperty(Enums.NetRoomProperties.StarRequirement, out int starsToWin);
-            GetCustomProperty(Enums.NetRoomProperties.NewPowerups, out bool custom);
-            GetCustomProperty(Enums.NetRoomProperties.Lives, out int livesOn);
-            bool lives = false;
-            if (livesOn > 0)
-                lives = true;
-
-            bool big = gm.spawnBigPowerups;
-            bool vertical = gm.spawnVerticalPowerups;
-
-            float totalChance = 0;
-            foreach (Powerup powerup in powerups) {
-                if (powerup.name == "MegaMushroom" && gm.musicState == Enums.MusicState.MegaMushroom)
-                    continue;
-                if ((powerup.big && !big) || (powerup.vertical && !vertical) || (powerup.custom && !custom) || (powerup.lives && !lives))
-                    continue;
-
-                totalChance += powerup.GetModifiedChance(starsToWin, leaderStars, ourStars);
+        public static void BitSet(ref int v, int index, bool value) {
+            if (value) {
+                v |= (1 << index);
+            } else {
+                v &= ~(1 << index);
             }
+        }
 
-            float rand = Random.value * totalChance;
-            foreach (Powerup powerup in powerups) {
-                if (powerup.name == "MegaMushroom" && gm.musicState == Enums.MusicState.MegaMushroom)
-                    continue;
-                if ((powerup.big && !big) || (powerup.vertical && !vertical) || (powerup.custom && !custom) || (powerup.lives && !lives))
-                    continue;
-
-                float chance = powerup.GetModifiedChance(starsToWin, leaderStars, ourStars);
-
-                if (rand < chance)
-                    return powerup;
-                rand -= chance;
+        public static void BitSet(ref uint v, int index, bool value) {
+            if (value) {
+                v |= (1U << index);
+            } else {
+                v &= ~(1U << index);
             }
+        }
 
-            return powerups[1];
+        public static void BitSet(ref ulong v, int index, bool value) {
+            if (value) {
+                v |= (1UL << index);
+            } else {
+                v &= ~(1UL << index);
+            }
+        }
+
+        public static string SecondsToMinuteSeconds(int number) {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(number / 60).Append(':').AppendFormat((number % 60).ToString("00"));
+            return builder.ToString();
         }
 
         public static float QuadraticEaseOut(float v) {
             return -1 * v * (v - 2);
         }
 
-        public static ExitGames.Client.Photon.Hashtable GetTilemapChanges(TileBase[] original, BoundsInt bounds, Tilemap tilemap) {
-            Dictionary<int, int> changes = new();
-            List<string> tiles = new();
+        public static float EaseInOut(float x) {
+            return x < 0.5f ? 2 * x * x : 1 - ((-2 * x + 2) * (-2 * x + 2) / 2);
+        }
 
-            TileBase[] current = tilemap.GetTilesBlock(bounds);
+        private static readonly Dictionary<char, string> uiSymbols = new() {
+            ['0'] = "hudnumber_0",
+            ['1'] = "hudnumber_1",
+            ['2'] = "hudnumber_2",
+            ['3'] = "hudnumber_3",
+            ['4'] = "hudnumber_4",
+            ['5'] = "hudnumber_5",
+            ['6'] = "hudnumber_6",
+            ['7'] = "hudnumber_7",
+            ['8'] = "hudnumber_8",
+            ['9'] = "hudnumber_9",
+            ['x'] = "hudnumber_x",
+            ['C'] = "hudnumber_coin",
+            ['S'] = "hudnumber_star",
+            ['T'] = "hudnumber_timer",
+            ['/'] = "hudnumber_slash",
+            [':'] = "hudnumber_colon",
+        };
+        public static readonly Dictionary<char, string> numberSymbols = new() {
+            ['0'] = "coinnumber_0",
+            ['1'] = "coinnumber_1",
+            ['2'] = "coinnumber_2",
+            ['3'] = "coinnumber_3",
+            ['4'] = "coinnumber_4",
+            ['5'] = "coinnumber_5",
+            ['6'] = "coinnumber_6",
+            ['7'] = "coinnumber_7",
+            ['8'] = "coinnumber_8",
+            ['9'] = "coinnumber_9",
+        };
+        public static readonly Dictionary<char, string> smallSymbols = new() {
+            ['0'] = "room_smallnumber_0",
+            ['1'] = "room_smallnumber_1",
+            ['2'] = "room_smallnumber_2",
+            ['3'] = "room_smallnumber_3",
+            ['4'] = "room_smallnumber_4",
+            ['5'] = "room_smallnumber_5",
+            ['6'] = "room_smallnumber_6",
+            ['7'] = "room_smallnumber_7",
+            ['8'] = "room_smallnumber_8",
+            ['9'] = "room_smallnumber_9",
+        };
 
-            for (int i = 0; i < original.Length; i++) {
-                if (current[i] == original[i])
-                    continue;
+        private static StringBuilder symbolStringBuilder = new();
+        public static string GetSymbolString(ReadOnlySpan<char> str, Dictionary<char, string> dict = null) {
+            dict ??= uiSymbols;
 
-                TileBase cTile = current[i];
-                string path;
-                if (cTile == null) {
-                    path = "";
+            symbolStringBuilder.Clear();
+            foreach (char c in str) {
+                if (dict.TryGetValue(c, out string name)) {
+                    symbolStringBuilder.Append("<sprite name=").Append(name).Append('>');
                 } else {
-                    path = ResourceDB.GetAsset(cTile.name).ResourcesPath;
+                    symbolStringBuilder.Append(c);
                 }
+            }
+            return symbolStringBuilder.ToString();
+        }
 
-                if (!tiles.Contains(path))
-                    tiles.Add(path);
-
-                changes[i] = tiles.IndexOf(path);
+        private static readonly Color spectatorColor = new(0.9f, 0.9f, 0.9f, 0.7f);
+        public unsafe static Color GetPlayerColor(Frame f, PlayerRef player, float s = 1, float v = 1) {
+            if (f == null || player == PlayerRef.None) {
+                return spectatorColor;
             }
 
-            return new() {
-                ["T"] = tiles.ToArray(),
-                ["C"] = changes,
+            // Prioritize spectator status
+            if (!f.TryResolveDictionary(f.Global->PlayerDatas, out var playerDataDict)
+                || !playerDataDict.TryGetValue(player, out EntityRef playerDataEntity)
+                || !f.Unsafe.TryGetPointer(playerDataEntity, out PlayerData* playerData)
+                || playerData->IsSpectator) {
+
+                return spectatorColor;
+            }
+
+            // Or dead marios
+            if (f.Global->GameState > GameState.WaitingForPlayers) {
+                var marioFilter = f.Filter<MarioPlayer>();
+                marioFilter.UseCulling = false;
+                bool hasMario = false;
+                while (marioFilter.NextUnsafe(out _, out MarioPlayer* mario)) {
+                    if (mario->PlayerRef == player) {
+                        hasMario = true;
+                        break;
+                    }
+                }
+
+                if (!hasMario) {
+                    return spectatorColor;
+                }
+            }
+
+            // Then team
+            if (f.Global->Rules.TeamsEnabled) {
+                return GetTeamColor(f, playerData->Team, s, v);
+            }
+
+            // Then id based color
+            PlayerData* ourPlayerData = QuantumUtils.GetPlayerData(f, player);
+            int ourIndex = 0;
+            int totalPlayers = 0;
+
+            var playerFilter = f.Filter<PlayerData>();
+            playerFilter.UseCulling = false;
+            while (playerFilter.NextUnsafe(out _, out PlayerData* otherPlayerData)) {
+                if (otherPlayerData->IsSpectator) {
+                    continue;
+                }
+
+                totalPlayers++;
+                if (otherPlayerData->JoinTick < ourPlayerData->JoinTick) {
+                    ourIndex++;
+                }
+            }
+
+            return Color.HSVToRGB(ourIndex / (totalPlayers + 1f), s, v);
+        }
+
+        public static Color GetTeamColor(Frame f, int team, float s = 1, float v = 1) {
+            var teams = f.SimulationConfig.Teams;
+            if (team < 0 || team >= teams.Length) {
+                return spectatorColor;
+            }
+
+            Color color = teams[team].color;
+            Color.RGBToHSV(color, out float hue, out float saturation, out float value);
+            return Color.HSVToRGB(hue, saturation * s, value * v);
+        }
+
+        public static bool IsMarioLocal(EntityRef entity) {
+            return PlayerElements.AllPlayerElements.Any(pe => pe.Entity == entity);
+        }
+
+        public static string GetPingSymbol(int ping) {
+            return ping switch {
+                < 0 => "<sprite name=connection_disconnected>",
+                0 => "<sprite name=connection_host>",
+                < 80 => "<sprite name=connection_great>",
+                < 130 => "<sprite name=connection_good>",
+                < 180 => "<sprite name=connection_fair>",
+                _ => "<sprite name=connection_bad>"
             };
         }
 
-        public static void ApplyTilemapChanges(TileBase[] original, BoundsInt bounds, Tilemap tilemap, ExitGames.Client.Photon.Hashtable changesTable) {
-            TileBase[] copy = (TileBase[]) original.Clone();
-
-            Dictionary<int, int> changes = (Dictionary<int, int>) changesTable["C"];
-            string[] tiles = (string[]) changesTable["T"];
-
-            foreach (KeyValuePair<int, int> pairs in changes) {
-                copy[pairs.Key] = GetTileFromCache(tiles[pairs.Value]);
+        public static string BytesToString(long byteCount) {
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; // Longs run out around EB
+            if (byteCount == 0) {
+                return "0B";
             }
 
-            tilemap.SetTilesBlock(bounds, copy);
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+            return (Math.Sign(byteCount) * num).ToString() + suf[place];
         }
 
-        private static readonly Dictionary<string, TileBase> tileCache = new();
-        public static TileBase GetTileFromCache(string tilename) {
-            if (tilename == null || tilename == "")
-                return null;
-
-            if (!tilename.StartsWith("Tilemaps/Tiles/"))
-                tilename = "Tilemaps/Tiles/" + tilename;
-
-            return tileCache.ContainsKey(tilename) ?
-                tileCache[tilename] :
-                tileCache[tilename] = Resources.Load(tilename) as TileBase;
-        }
-
-        private static readonly Dictionary<char, byte> uiSymbols = new() {
-            ['c'] = 6,
-            ['0'] = 11,
-            ['1'] = 12,
-            ['2'] = 13,
-            ['3'] = 14,
-            ['4'] = 15,
-            ['5'] = 16,
-            ['6'] = 17,
-            ['7'] = 18,
-            ['8'] = 19,
-            ['9'] = 20,
-            ['x'] = 21,
-            ['C'] = 22,
-            ['S'] = 23,
-            ['/'] = 24,
-            [':'] = 25,
-        };
-        public static readonly Dictionary<char, byte> numberSymbols = new() {
-            ['0'] = 27,
-            ['1'] = 28,
-            ['2'] = 29,
-            ['3'] = 30,
-            ['4'] = 31,
-            ['5'] = 32,
-            ['6'] = 33,
-            ['7'] = 34,
-            ['8'] = 35,
-            ['9'] = 36,
-        };
-        public static readonly Dictionary<char, byte> smallSymbols = new() {
-            ['0'] = 48,
-            ['1'] = 39,
-            ['2'] = 40,
-            ['3'] = 41,
-            ['4'] = 42,
-            ['5'] = 43,
-            ['6'] = 44,
-            ['7'] = 45,
-            ['8'] = 46,
-            ['9'] = 47,
-        };
-        public static string GetSymbolString(string str, Dictionary<char, byte> dict = null) {
-            if (dict == null)
-                dict = uiSymbols;
-
-            StringBuilder ret = new();
-            foreach (char c in str) {
-                if (dict.TryGetValue(c, out byte index)) {
-                    ret.Append("<sprite=").Append(index).Append(">");
-                } else {
-                    ret.Append(c);
-                }
-            }
-            return ret.ToString();
-        }
-
-        public static Color GetPlayerColor(Player player, float s = 1, float v = 1) {
-
-            int result = -1;
-            int count = 0;
-            foreach (var pl in PhotonNetwork.PlayerList) {
-                GetCustomProperty(Enums.NetPlayerProperties.Spectator, out bool spectating, pl.CustomProperties);
-                if (spectating)
-                    continue;
-
-                if (pl == player)
-                    result = count;
-
-                count++;
+        public static Color SampleNicknameColor(ReadOnlySpan<char> color, out bool constant) {
+            if (color == null || color.IsEmpty) {
+                constant = true;
+                return Color.white;
             }
 
-            if (result == -1)
-                return new Color(0.9f, 0.9f, 0.9f, 0.7f);
-
-            return Color.HSVToRGB(result / ((float) count + 1), s, v);
-        }
-
-        public static void TickTimer(ref float counter, float min, float delta, float max = float.MaxValue) {
-            counter = Mathf.Clamp(counter - delta, min, max);
+            if (color[0] == '#') {
+                constant = true;
+                return new Color32(byte.Parse(color[1..3], System.Globalization.NumberStyles.HexNumber), byte.Parse(color[3..5], System.Globalization.NumberStyles.HexNumber), byte.Parse(color[5..7], System.Globalization.NumberStyles.HexNumber), 255);
+            } else if (color == "rainbow") {
+                constant = false;
+                return GetRainbowColor();
+            } else {
+                constant = true;
+                return Color.white;
+            }
         }
 
         public static Color GetRainbowColor() {
-            double time = PhotonNetwork.Time * 0.1;
-            time %= 1;
+            // Four seconds per revolution
+            double time = (Time.timeAsDouble * 0.25d) % 1d;
             return GlobalController.Instance.rainbowGradient.Evaluate((float) time);
         }
     }

@@ -1,0 +1,114 @@
+
+<color=yellow>{ui.about.credits.gameby}</color>
+ipodtouch0218
+
+<color=yellow>{ui.about.credits.github}</color>
+Amy54Desu
+ArianLust
+AtwerJ
+Ave
+Cubby Crazes
+DonKaiStorm
+GithubSPerez
+GradedWarrior
+Jeffjewett27
+kittenchilly
+Kraken
+mindnomad
+Pordrack
+skarph
+Skillz
+ShadowWalker
+TheMoogle
+Tombuntu
+xFrostyCake123
+VLC
+Zest
+
+<color=yellow>{ui.about.credits.music}</color>
+Cubby Crazes
+RENREN
+LiamNayru
+vincells
+
+<color=yellow>{ui.about.credits.translation}</color>
+3UP
+Akselai
+AtwerJ
+Bilhal
+Cecilia
+Davo
+Filipianosol
+Flandre Scarlet
+Flichka
+Freeze
+HatsuneMiku
+haywireghost
+HD Erick Games
+Hyruyoshi
+Iketarou
+Kate Karui
+Lyroy The Toad
+marbo
+Mark19
+MasterMindo
+Med Animations
+miyavmeow
+Mr-STF
+ossdekasaihassei
+Shadow_Walker13
+Snick, It's Him.
+Thebababois369
+Tombuntu
+vlco_o
+
+<color=yellow>{ui.about.credits.qa}</color>
+Ave
+Cubby Crazes
+Fawndue
+Grape
+mindnomad
+Shadow_Walker13
+TheCyVap
+
+<color=yellow>{ui.about.credits.leveldesign}</color>
+AtwerJ
+Ave
+mindnomad
+Skarph
+TheCyVap
+VentureSonic
+
+<color=yellow>{ui.about.credits.original}</color>
+New Super Mario Bros.
+New Super Mario Bros. Wii
+Super Mario Maker 2
+(c) Nintendo
+
+<color=yellow>{ui.about.credits.assets}</color>
+A Refracted Swindler (UI)
+Clougo (Tiles)
+Cubby Crazes (Sound)
+Demon2Warrior (Background)
+Double S (Models)
+Guywah (Fonts)
+Hiccup (Tiles)
+Jouv (Tiles)
+KartMakerBrosU (Models)
+Keira (Background)
+Luke Hackett (Sound)
+LukeWarnut (Sound)
+mindnomad (Tiles/Sound)
+Mr. C (Enemies)
+Mr-STF (Tiles)
+Ohthatguy (Background)
+Poudink (Tiles)
+Ragey (Enemies)
+Skarph (Models/Sound)
+Someone (Tiles)
+Symbolcom (Tiles/Enemies)
+Techokami (Enemies)
+TeridaxXD001 (Models)
+Treeki (UI)
+VentureSonic (Background)
+xFrostyCake123 (Sound)

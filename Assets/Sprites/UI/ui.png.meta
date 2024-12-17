@@ -21,7 +21,7 @@ TextureImporter:
       213: -9005941153719796207
     second: host
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -43,7 +43,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -83,6 +83,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -94,6 +95,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -106,6 +108,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -118,6 +121,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -130,6 +134,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -142,6 +147,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -154,59 +160,18 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ui_1
-      rect:
-        serializedVersion: 2
-        x: 13
-        y: 56
-        width: 11
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b86016dcd681a5130800000000000000
-      internalID: 3556181715638617739
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_2
-      rect:
-        serializedVersion: 2
-        x: 26
-        y: 56
-        width: 11
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: df1f7afbf3a27a580800000000000000
-      internalID: -8816031292267695619
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_3
+      name: hud_mario
       rect:
         serializedVersion: 2
         x: 0
-        y: 36
+        y: 220
         width: 20
         height: 20
       alignment: 0
@@ -223,11 +188,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_4
+      name: hud_luigi
       rect:
         serializedVersion: 2
         x: 20
-        y: 36
+        y: 220
         width: 20
         height: 20
       alignment: 0
@@ -244,13 +209,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: host
+      name: room_host
       rect:
         serializedVersion: 2
         x: 40
-        y: 36
+        y: 220
         width: 21
-        height: 20
+        height: 19
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,32 +230,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_0
+      name: room_timer
       rect:
         serializedVersion: 2
-        x: 0
-        y: 56
-        width: 13
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b5af27452eed7dc46b15db4ac096cf8e
-      internalID: 5707218116961789024
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ui_5
-      rect:
-        serializedVersion: 2
-        x: 39
-        y: 56
+        x: 1
+        y: 243
         width: 13
         height: 13
       alignment: 0
@@ -307,11 +251,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_6
+      name: room_private
       rect:
         serializedVersion: 2
-        x: 52
-        y: 56
+        x: 15
+        y: 243
         width: 13
         height: 13
       alignment: 0
@@ -328,11 +272,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_7
+      name: room_powerups
       rect:
         serializedVersion: 2
-        x: 65
-        y: 56
+        x: 29
+        y: 243
         width: 13
         height: 13
       alignment: 0
@@ -349,11 +293,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_8
+      name: room_lives
       rect:
         serializedVersion: 2
-        x: 78
-        y: 56
+        x: 43
+        y: 243
         width: 13
         height: 13
       alignment: 0
@@ -370,11 +314,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_9
+      name: hud_star
       rect:
         serializedVersion: 2
         x: 65
-        y: 32
+        y: 219
         width: 23
         height: 23
       alignment: 0
@@ -391,11 +335,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_10
+      name: hudnumber_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -412,11 +356,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_11
+      name: hudnumber_1
       rect:
         serializedVersion: 2
         x: 15
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -433,11 +377,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_12
+      name: hudnumber_2
       rect:
         serializedVersion: 2
         x: 30
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -454,11 +398,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_13
+      name: hudnumber_3
       rect:
         serializedVersion: 2
         x: 45
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -475,11 +419,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_14
+      name: hudnumber_4
       rect:
         serializedVersion: 2
         x: 60
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -496,11 +440,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_15
+      name: hudnumber_5
       rect:
         serializedVersion: 2
         x: 75
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -517,11 +461,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_16
+      name: hudnumber_6
       rect:
         serializedVersion: 2
         x: 90
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -538,11 +482,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_17
+      name: hudnumber_7
       rect:
         serializedVersion: 2
         x: 105
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -559,11 +503,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_18
+      name: hudnumber_8
       rect:
         serializedVersion: 2
         x: 120
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -580,11 +524,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_19
+      name: hudnumber_9
       rect:
         serializedVersion: 2
         x: 135
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -601,11 +545,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_20
+      name: hudnumber_x
       rect:
         serializedVersion: 2
         x: 150
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -622,11 +566,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_21
+      name: hudnumber_coin
       rect:
         serializedVersion: 2
         x: 165
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -643,11 +587,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_22
+      name: hudnumber_star
       rect:
         serializedVersion: 2
         x: 180
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -664,11 +608,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_23
+      name: hudnumber_slash
       rect:
         serializedVersion: 2
         x: 195
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 7
@@ -685,11 +629,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_24
+      name: hudnumber_colon
       rect:
         serializedVersion: 2
         x: 210
-        y: 15
+        y: 202
         width: 15
         height: 16
       alignment: 0
@@ -706,13 +650,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_25
+      name: team_blue_alt
       rect:
         serializedVersion: 2
-        x: 92
-        y: 32
-        width: 24
-        height: 23
+        x: 17
+        y: 135
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -727,11 +671,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_26
+      name: coinnumber_0
       rect:
         serializedVersion: 2
         x: 1
-        y: 0
+        y: 186
         width: 12
         height: 14
       alignment: 0
@@ -748,11 +692,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_27
+      name: coinnumber_1
       rect:
         serializedVersion: 2
         x: 14
-        y: 0
+        y: 186
         width: 8
         height: 14
       alignment: 0
@@ -769,11 +713,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_28
+      name: coinnumber_2
       rect:
         serializedVersion: 2
         x: 23
-        y: 0
+        y: 186
         width: 13
         height: 14
       alignment: 0
@@ -790,11 +734,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_29
+      name: coinnumber_3
       rect:
         serializedVersion: 2
         x: 37
-        y: 0
+        y: 186
         width: 12
         height: 14
       alignment: 0
@@ -811,11 +755,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_30
+      name: coinnumber_4
       rect:
         serializedVersion: 2
         x: 50
-        y: 0
+        y: 186
         width: 14
         height: 14
       alignment: 0
@@ -832,11 +776,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_31
+      name: coinnumber_5
       rect:
         serializedVersion: 2
         x: 65
-        y: 0
+        y: 186
         width: 13
         height: 14
       alignment: 0
@@ -853,11 +797,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_32
+      name: coinnumber_6
       rect:
         serializedVersion: 2
         x: 79
-        y: 0
+        y: 186
         width: 14
         height: 14
       alignment: 0
@@ -874,11 +818,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_33
+      name: coinnumber_7
       rect:
         serializedVersion: 2
         x: 94
-        y: 0
+        y: 186
         width: 14
         height: 14
       alignment: 0
@@ -895,11 +839,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_34
+      name: coinnumber_8
       rect:
         serializedVersion: 2
         x: 109
-        y: 0
+        y: 186
         width: 15
         height: 14
       alignment: 0
@@ -916,11 +860,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_35
+      name: coinnumber_9
       rect:
         serializedVersion: 2
         x: 125
-        y: 0
+        y: 186
         width: 14
         height: 14
       alignment: 0
@@ -937,15 +881,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_36
+      name: room_coins
       rect:
         serializedVersion: 2
-        x: 92
-        y: 56
+        x: 57
+        y: 243
         width: 12
         height: 13
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -958,15 +902,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_37
+      name: room_stars
       rect:
         serializedVersion: 2
-        x: 104
-        y: 56
+        x: 70
+        y: 243
         width: 13
         height: 13
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -979,15 +923,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_38
+      name: room_smallnumber_1
       rect:
         serializedVersion: 2
-        x: 120
-        y: 56
+        x: 113
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1000,15 +944,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_39
+      name: room_smallnumber_2
       rect:
         serializedVersion: 2
-        x: 125
-        y: 56
+        x: 119
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1021,15 +965,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_40
+      name: room_smallnumber_3
       rect:
         serializedVersion: 2
-        x: 130
-        y: 56
+        x: 125
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1042,15 +986,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_41
+      name: room_smallnumber_4
       rect:
         serializedVersion: 2
-        x: 135
-        y: 56
+        x: 131
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1063,15 +1007,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_42
+      name: room_smallnumber_5
       rect:
         serializedVersion: 2
-        x: 140
-        y: 56
+        x: 137
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1084,15 +1028,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_43
+      name: room_smallnumber_6
       rect:
         serializedVersion: 2
-        x: 145
-        y: 56
+        x: 143
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1105,15 +1049,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_44
+      name: room_smallnumber_7
       rect:
         serializedVersion: 2
-        x: 150
-        y: 56
+        x: 149
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1126,15 +1070,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_45
+      name: room_smallnumber_8
       rect:
         serializedVersion: 2
         x: 155
-        y: 56
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1147,15 +1091,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_46
+      name: room_smallnumber_9
       rect:
         serializedVersion: 2
-        x: 160
-        y: 56
+        x: 161
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1168,15 +1112,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ui_47
+      name: room_smallnumber_0
       rect:
         serializedVersion: 2
-        x: 165
-        y: 56
+        x: 167
+        y: 243
         width: 5
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1184,6 +1128,783 @@ TextureImporter:
       bones: []
       spriteID: ba5df0829ffcea843b6b30ea1c50fb84
       internalID: -733638968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_teams
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c48fb695cd194a8448c6327b38c6ad95
+      internalID: 314515511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_red
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 169
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a548248040c477499fa690507535d47
+      internalID: -377791532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_green
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 152
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5096630e8f9637a47a8d749fcc6f5493
+      internalID: -1628061930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_blue
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 135
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6647005b6d10e0f4fb2aae95b246cb25
+      internalID: 1551341904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_yellow
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 118
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70f78634dd227d34397894e9788c719a
+      internalID: -769868482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_magenta
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 101
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d49239e8ccd34e94d9def59a5d8e75cd
+      internalID: -1676610151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_win
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 220
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cb5a16756d5fc54db9bcde5685d00b7
+      internalID: 1471587138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_great
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0511fd2d6ac80e34490def70e7411315
+      internalID: 1763873500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_good
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1811fc7fe207ff42a7cfdaed35a0382
+      internalID: -1507071055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_fair
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad8ab8c6a7742c84fb185664161ead64
+      internalID: 1021722474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_bad
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0608d00d2e04ad469331e13fa0a8145
+      internalID: 116447381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_host
+      rect:
+        serializedVersion: 2
+        x: 157
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87748f25433e72945b990345e28589ea
+      internalID: -1762235557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: connection_disconnected
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 220
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efb0be281e9629c4490cfb90dc501b8f
+      internalID: 762531918
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_reconnect
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e6d6fc1977dc31478285c2aac92472e
+      internalID: 124917301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_red_alt
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 169
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e2437c83e9197646831e76060391aa4
+      internalID: 3556181715638617739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_green_alt
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 152
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f856931f2c4e16c429c648a0c4df0a26
+      internalID: -8816031292267695619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_yellow_alt
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 118
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9becd0804892a54485d4705ba15b6ee
+      internalID: 712068762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_magenta_alt
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 101
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb44b934f1cc1a0429a67197e03bcb7c
+      internalID: 458381231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_red_alt_big
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 163
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c2315c83bf8ed44cb1558b2149a447f
+      internalID: 1468428986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_green_alt_big
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 139
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6f69d081c1f78746b6a1db901fd524c
+      internalID: 68036940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_blue_alt_big
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 116
+        width: 20
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55884db0221eed4458c82ce601dc5d25
+      internalID: 1646669882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_yellow_alt_big
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 93
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5978f1204cc4d924294fd931c2a49e16
+      internalID: 1936513099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_magenta_alt_big
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 67
+        width: 20
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56ba1f22565c4d84b99ae6ee099b4b5f
+      internalID: 1220030899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_customlevel
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4deda689e656d745b27f46170bb9164
+      internalID: -971827560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_spectator
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fbe5088a09f594429ac89539e20fe25
+      internalID: -2077949175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hudnumbers_timer
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78a2c269121fcce488a5696f219616dc
+      internalID: 932749408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dpad_button
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 583be58e5f4631a44a7d605b043e33fc
+      internalID: -1771438400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: a_button
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 999eaf0251a65474eb5e7bd0fbe657e1
+      internalID: -242346903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: b_button
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62807b1bae33f524fbb24755e81ca371
+      internalID: 66600449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: x_button
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75bb7f0002dfbe24184581e40c216d75
+      internalID: 2096157750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: y_button
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6b7d78c120050e4e97a573452bc41b7
+      internalID: -600503074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: l_button
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f5878906413834f87eb4d3f5ff5107
+      internalID: 1433395218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: r_button
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 175
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59730587d4ddf404d87b0af20baac411
+      internalID: 907324317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_muted
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa07d3938c9e7a14f8e5c6744ecf3582
+      internalID: 1560846788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_create
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a59666638e4d1ef448e3c7973ef57bcd
+      internalID: 1496232669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropdown_arrow
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a625d3a88300294f85b0612dab85b42
+      internalID: -2027879749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: checkmark
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 202
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f02c22006eede4a9bbf5326f0602a5
+      internalID: 380926162
       vertices: []
       indices: 
       edges: []
@@ -1199,56 +1920,90 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ui_13: 1989843761
-      ui_9: 1346584908
-      ui_4: -7975249404588759376
-      ui_12: -1355574207
-      ui_19: -140438321
-      ui_27: -1760457897
-      ui_44: 2001480390
-      ui_32: -695869007
-      ui_40: 1283854863
-      ui_33: -1247146109
-      ui_31: -2138142152
-      ui_38: 1109955768
-      ui_7: 268930356
-      ui_16: -1617229830
-      ui_23: -688806156
-      ui_28: 1081746599
-      ui_39: 918184948
-      ui_1: 3556181715638617739
-      ui_36: 1534273505
-      ui_11: -146918758
-      ui_14: 593802006
-      ui_45: 442522640
-      ui_35: -53618040
-      ui_46: -1616819778
-      ui_0: 5707218116961789024
-      ui_34: 1239800451
-      ui_21: -1972445275
-      ui_22: 861810113
-      ui_3: 7263181891274304025
-      ui_43: 635142360
-      ui_6: -1683070159
-      ui_8: 1261997413
-      ui_29: -1525402044
-      ui_42: 1644416621
-      ui_41: 459308681
-      ui_2: -8816031292267695619
-      ui_5: 309482482
-      ui_37: -846454927
-      ui_20: -1713447182
-      ui_47: -733638968
-      ui_26: -878907871
-      ui_17: -1187201629
-      ui_10: -56961979
-      host: -9005941153719796207
-      ui_30: -1548187890
-      ui_24: 1420784344
-      ui_15: -1455545889
-      ui_18: -1301614389
-      ui_25: 286214285
-  spritePackingTag: 
+      a_button: -242346903
+      b_button: 66600449
+      checkmark: 380926162
+      coinnumber_0: -878907871
+      coinnumber_1: -1760457897
+      coinnumber_2: 1081746599
+      coinnumber_3: -1525402044
+      coinnumber_4: -1548187890
+      coinnumber_5: -2138142152
+      coinnumber_6: -695869007
+      coinnumber_7: -1247146109
+      coinnumber_8: 1239800451
+      coinnumber_9: -53618040
+      connection_bad: 116447381
+      connection_disconnected: 762531918
+      connection_fair: 1021722474
+      connection_good: -1507071055
+      connection_great: 1763873500
+      connection_host: -1762235557
+      dpad_button: -1771438400
+      dropdown_arrow: -2027879749
+      hud_luigi: -7975249404588759376
+      hud_mario: 7263181891274304025
+      hud_star: 1346584908
+      hudnumber_0: -56961979
+      hudnumber_1: -146918758
+      hudnumber_2: -1355574207
+      hudnumber_3: 1989843761
+      hudnumber_4: 593802006
+      hudnumber_5: -1455545889
+      hudnumber_6: -1617229830
+      hudnumber_7: -1187201629
+      hudnumber_8: -1301614389
+      hudnumber_9: -140438321
+      hudnumber_coin: -1972445275
+      hudnumber_colon: 1420784344
+      hudnumber_slash: -688806156
+      hudnumber_star: 861810113
+      hudnumber_x: -1713447182
+      hudnumbers_timer: 932749408
+      l_button: 1433395218
+      player_muted: 1560846788
+      r_button: 907324317
+      room_coins: 1534273505
+      room_create: 1496232669
+      room_customlevel: -971827560
+      room_host: -9005941153719796207
+      room_lives: 1261997413
+      room_powerups: 268930356
+      room_private: -1683070159
+      room_reconnect: 124917301
+      room_smallnumber_0: -733638968
+      room_smallnumber_1: 1109955768
+      room_smallnumber_2: 918184948
+      room_smallnumber_3: 1283854863
+      room_smallnumber_4: 459308681
+      room_smallnumber_5: 1644416621
+      room_smallnumber_6: 635142360
+      room_smallnumber_7: 2001480390
+      room_smallnumber_8: 442522640
+      room_smallnumber_9: -1616819778
+      room_spectator: -2077949175
+      room_stars: -846454927
+      room_teams: 314515511
+      room_timer: 309482482
+      room_win: 1471587138
+      team_blue: 1551341904
+      team_blue_alt: 286214285
+      team_blue_alt_big: 1646669882
+      team_green: -1628061930
+      team_green_alt: -8816031292267695619
+      team_green_alt_big: 68036940
+      team_magenta: -1676610151
+      team_magenta_alt: 458381231
+      team_magenta_alt_big: 1220030899
+      team_red: -377791532
+      team_red_alt: 3556181715638617739
+      team_red_alt_big: 5707218116961789024
+      team_yellow: -769868482
+      team_yellow_alt: 712068762
+      team_yellow_alt_big: 1936513099
+      x_button: 2096157750
+      y_button: -600503074
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
   assetBundleName: 

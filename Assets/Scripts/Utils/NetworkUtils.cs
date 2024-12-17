@@ -1,142 +1,124 @@
-using System.Collections.Generic;
-using System.Linq;
-
-using ExitGames.Client.Photon;
-using Photon.Pun;
+using Photon.Client;
 using Photon.Realtime;
+using System.Collections.Generic;
 
 namespace NSMB.Utils {
     public static class NetworkUtils {
 
-        public static WebFlags forward = new(WebFlags.HttpForwardConst);
-
-        public static Dictionary<DisconnectCause, string> disconnectMessages = new() {
-
-            [DisconnectCause.MaxCcuReached] = "Max player count reached in this region (100 players MAX)",
-            [DisconnectCause.CustomAuthenticationFailed] = "Failed to authenticate with the auth server",
-            //[DisconnectCause.DisconnectByServerLogic] = "",
-
+        public static PhotonHashtable DefaultRoomProperties => new() {
+            [Enums.NetRoomProperties.IntProperties] = (int) IntegerProperties.Default,
+            [Enums.NetRoomProperties.BoolProperties] = (int) BooleanProperties.Default,
+            [Enums.NetRoomProperties.StageGuid] = GlobalController.Instance.config.DefaultRules.Level.Id.ToString(),
         };
 
-        public static RaiseEventOptions EventOthers { get; } = new() { Receivers = ReceiverGroup.Others };
-        public static RaiseEventOptions EventAll { get; } = new() { Receivers = ReceiverGroup.All };
-        public static RaiseEventOptions EventMasterClient { get; } = new() { Receivers = ReceiverGroup.MasterClient };
+        public static Dictionary<short, string> RealtimeErrorCodes = new() {
+            [ErrorCode.CustomAuthenticationFailed] = "ui.error.authentication",
+            [ErrorCode.MaxCcuReached] = "ui.error.ccu",
 
-        private readonly static Hashtable _defaultRoomProperties = new() {
-            [Enums.NetRoomProperties.Level] = 0,
-            [Enums.NetRoomProperties.StarRequirement] = 10,
-            [Enums.NetRoomProperties.CoinRequirement] = 8,
-            [Enums.NetRoomProperties.Lives] = -1,
-            [Enums.NetRoomProperties.Time] = -1,
-            [Enums.NetRoomProperties.DrawTime] = false,
-            [Enums.NetRoomProperties.NewPowerups] = true,
-            [Enums.NetRoomProperties.GameStarted] = false,
-            [Enums.NetRoomProperties.HostName] = "",
-            [Enums.NetRoomProperties.Debug] = false,
-            [Enums.NetRoomProperties.Mutes] = new string[0],
-            [Enums.NetRoomProperties.Bans] = new object[0],
+            [ErrorCode.GameDoesNotExist] = "ui.error.join.notfound",
+            [ErrorCode.GameClosed] = "ui.error.join.closed",
+            [ErrorCode.GameFull] = "ui.error.join.full",
+            [ErrorCode.JoinFailedFoundActiveJoiner] = "ui.error.join.alreadyingame",
         };
 
-        public static Hashtable DefaultRoomProperties {
-            get {
-                Hashtable ret = new();
-                ret.Merge(_defaultRoomProperties);
+        public static Dictionary<DisconnectCause, string> RealtimeDisconnectCauses = new() {
+            [DisconnectCause.CustomAuthenticationFailed] = "ui.error.authentication",
+            [DisconnectCause.MaxCcuReached] = "ui.error.ccu",
+            [DisconnectCause.DnsExceptionOnConnect] = "ui.error.connection",
+            [DisconnectCause.ExceptionOnConnect] = "ui.error.connection",
+            [DisconnectCause.ServerTimeout] = "ui.error.timeout",
+            [DisconnectCause.ClientTimeout] = "ui.error.timeout",
+            [DisconnectCause.Exception] = "ui.error.unknown",
+            [DisconnectCause.DisconnectByServerLogic] = "ui.error.plugin",
+        };
+
+        public struct IntegerProperties {
+            public static readonly IntegerProperties Default = new() {
+                CoinRequirement = 8,
+                StarRequirement = 10
+            };
+
+            // Level :: Value ranges from 0-63: 6 bits
+            // Timer :: Value ranges from 0-99: 7 bits
+            // Lives :: Value ranges from 1-25: 5 bits
+            // CoinRequirement :: Value ranges from 3-25: 5 bits
+            // StarRequirement :: Value ranges from 1-25: 5 bits
+            // MaxPlayers :: Value ranges from 1-10: 4 bits
+
+            // 31....26   25.....19   18...14   13...9   8...4   3..0
+            // Level      Timer       Lives     Coins    Stars   Unused
+            public int Level, Timer, Lives, CoinRequirement, StarRequirement;
+
+            public static implicit operator int(IntegerProperties props) {
+                int value = 0;
+
+                value |= (props.Level & 0b111111) << 26;
+                value |= (props.Timer & 0b1111111) << 19;
+                value |= (props.Lives & 0b11111) << 14;
+                value |= (props.CoinRequirement & 0b11111) << 9;
+                value |= (props.StarRequirement & 0b11111) << 4;
+                // value |= (props.MaxPlayers & 0b1111) << 0;
+
+                return value;
+            }
+
+            public static implicit operator IntegerProperties(int bits) {
+                IntegerProperties ret = new() {
+                    Level = (bits >> 26) & 0b111111,
+                    Timer = (bits >> 19) & 0b1111111,
+                    Lives = (bits >> 14) & 0b11111,
+                    CoinRequirement = (bits >> 9) & 0b11111,
+                    StarRequirement = (bits >> 4) & 0b11111,
+                    // MaxPlayers = (bits >> 0) & 0b1111,
+                };
                 return ret;
             }
-            private set { }
-        }
+        };
 
-        public static readonly string[] LobbyVisibleRoomProperties = new string[] {
-        Enums.NetRoomProperties.Lives,
-        Enums.NetRoomProperties.StarRequirement,
-        Enums.NetRoomProperties.CoinRequirement,
-        Enums.NetRoomProperties.Time,
-        Enums.NetRoomProperties.NewPowerups,
-        Enums.NetRoomProperties.GameStarted,
-        Enums.NetRoomProperties.HostName,
-    };
-
-        public static readonly RegionPingComparer PingComparer = new();
-        public class RegionPingComparer : IComparer<Region> {
-            public int Compare(Region r1, Region r2) {
-                return r1.Ping - r2.Ping;
-            }
-        }
-
-        public static readonly RegionNameComparer NameComparer = new();
-        public class RegionNameComparer : IComparer<Region> {
-            public int Compare(Region r1, Region r2) {
-                return r1.Code.CompareTo(r2.Code);
-            }
-        }
-
-
-        public static readonly PlayerIdComparer PlayerComparer = new();
-        public class PlayerIdComparer : IComparer<KeyValuePair<int, Player>> {
-            public int Compare(KeyValuePair<int, Player> r1, KeyValuePair<int, Player> r2) {
-                return r1.Key - r2.Key;
-            }
-        }
-
-        public static bool IsSpectator(this Player player) {
-            bool valid = Utils.GetCustomProperty(Enums.NetPlayerProperties.Spectator, out bool value, player.CustomProperties);
-            return valid && value;
-        }
-
-        public static readonly Dictionary<string, string> nicknameCache = new();
-
-        public static string GetUniqueNickname(this Player player, bool checkCache = true) {
-            if (checkCache && nicknameCache.ContainsKey(player.UserId ?? "none"))
-                return nicknameCache[player.UserId ?? "none"];
-
-            //generate valid username
-            string nickname = player.NickName.ToValidUsername(false);
-
-            //nickname duplicates
-            List<KeyValuePair<int, Player>> players = PhotonNetwork.CurrentRoom.Players.ToList();
-            players.Sort(PlayerComparer);
-
-            int count = 0;
-            foreach ((int id, Player pl) in players) {
-                if (pl == player)
-                    break;
-
-                if (nickname == GetUniqueNickname(pl))
-                    count++;
-            }
-            if (count > 0)
-                nickname += $"({count})";
-
-            //update cache
-            nicknameCache[player.UserId ?? "none"] = nickname;
-
-            return nickname;
-        }
-    }
-
-    public class NameIdPair {
-        public string name, userId;
-
-        [System.Obsolete]
-        public static object Deserialize(StreamBuffer inStream, short length) {
-            byte[] buffer = new byte[length];
-            inStream.Read(buffer, 0, length);
-
-            string[] nameIdPair = ((string) Protocol.Deserialize(buffer)).Split(":");
-            NameIdPair newPair = new() {
-                name = nameIdPair[0],
-                userId = nameIdPair[1],
+        public struct BooleanProperties {
+            public static readonly BooleanProperties Default = new() {
+                CustomPowerups = true
             };
-            return newPair;
+
+            public bool CustomPowerups, Teams, DrawOnTimeUp, GameStarted;
+
+            public static implicit operator int(BooleanProperties props) {
+                int value = 0;
+
+                Utils.BitSet(ref value, 0, props.CustomPowerups);
+                Utils.BitSet(ref value, 1, props.Teams);
+                Utils.BitSet(ref value, 2, props.DrawOnTimeUp);
+                Utils.BitSet(ref value, 3, props.GameStarted);
+
+                return value;
+            }
+
+            public static implicit operator BooleanProperties(int bits) {
+                return new() {
+                    CustomPowerups = Utils.BitTest(bits, 0),
+                    Teams = Utils.BitTest(bits, 1),
+                    DrawOnTimeUp = Utils.BitTest(bits, 2),
+                    GameStarted = Utils.BitTest(bits, 3),
+                };
+            }
+        };
+
+        public static bool GetCustomProperty<T>(PhotonHashtable table, string key, out T value) {
+            if (table.TryGetValue(key, out object objValue)) {
+                value = (T) objValue;
+                return true;
+            }
+            value = default;
+            return false;
         }
 
-        [System.Obsolete]
-        public static short Serialize(StreamBuffer outStream, object obj) {
-            NameIdPair pair = (NameIdPair) obj;
-            byte[] bytes = Protocol.Serialize(pair.name + ":" + pair.userId);
-            outStream.Write(bytes, 0, bytes.Length);
-
-            return (short) bytes.Length;
+        public static bool GetCustomProperty(PhotonHashtable table, string key, out bool value) {
+            if (table.TryGetValue(key, out object objValue)) {
+                value = (int) objValue == 1;
+                return true;
+            }
+            value = default;
+            return false;
         }
     }
 }

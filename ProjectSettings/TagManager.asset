@@ -4,34 +4,26 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - goomba
-  - koopa
-  - Bullet
-  - Powerup
-  - coin
-  - bigstar
   - StarSpawn
-  - MainStar
-  - Fireball
-  - bobomb
   - MovingPlatform
-  - piranhaplant
   - pipe
   - LoadingCanvas
-  - loosecoin
   - wintext
-  - bulletbill
   - spinner
   - platform
   - poison
   - uicamera
   - CanvasMask
   - Backgrounds
-  - DestructablePipe
   - FadeUI
   - lava
   - MarioBrosPlatform
   - frozencube
+  - Squishy
+  - Powerup
+  - water
+  - MainTilemap
+  - MasterCanvas
   layers:
   - Default
   - TransparentFX
@@ -39,7 +31,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - PlayerPassthrough
   - Ground
   - Entity
@@ -47,9 +39,9 @@ TagManager:
   - HitsNothing
   - Semisolids
   - PassthroughInvalid
-  - IceBlock
-  - LooseCoin
-  - 
+  - GroundEntity
+  - EntityNoGroundEntity
+  - UINoCursor
   - 
   - 
   - 

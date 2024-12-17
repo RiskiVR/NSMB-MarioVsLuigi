@@ -1,47 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
+using NSMB.Extensions;
+using Quantum;
 using UnityEngine;
 
-public class SpinnerAnimator : MonoBehaviour {
+public unsafe class SpinnerAnimator : MonoBehaviour {
 
-    [SerializeField] private Vector3 idleSpinSpeed = new(0, -100, 0), fastSpinSpeed = new(0, -1800, 0);
-    [SerializeField] private Transform topArmBone;
+    //---Serialized Variables
+    [SerializeField] private QuantumEntityView entity;
+    [SerializeField] private Transform rotator;
+    [SerializeField] private AudioSource sfx;
+    [SerializeField] private GameObject launchParticlePrefab;
 
-    private float spinPercentage = 0;
-    private readonly List<PlayerController> playersInside = new();
+    public void OnValidate() {
+        this.SetIfNull(ref sfx);
+    }
 
-    public void Update() {
-        bool players = playersInside.Count >= 1;
-        float percentage = 0;
-        if (players) {
-            float playerWorldY = float.PositiveInfinity;
-            foreach (PlayerController player in playersInside) {
-                if (player.body.velocity.y > 0.2f)
-                    continue;
+    public void Start() {
+        QuantumEvent.Subscribe<EventMarioPlayerUsedSpinner>(this, OnMarioPlayerUsedSpinner, NetworkHandler.FilterOutReplayFastForward);
+        QuantumCallback.Subscribe<CallbackUpdateView>(this, OnUpdateView);
+    }
 
-                playerWorldY = Mathf.Min(playerWorldY, player.transform.position.y);
-            }
-            float spinnerWorldY = transform.position.y;
+    public void OnUpdateView(CallbackUpdateView e) {
+        QuantumGame game = e.Game;
+        Frame f = game.Frames.Predicted;
+        Frame fp = game.Frames.PredictedPrevious;
 
-            if (playerWorldY != float.PositiveInfinity)
-                percentage = 1 - ((playerWorldY - spinnerWorldY - 0.1f) / 0.25f);
+        if (!f.Unsafe.TryGetPointer(entity.EntityRef, out Spinner* spinner)
+            || !fp.Unsafe.TryGetPointer(entity.EntityRef, out Spinner* spinnerPrev)) {
+            return;
         }
 
-        spinPercentage = Mathf.Clamp01(spinPercentage + (players ? 0.75f * Time.deltaTime : -1f * Time.deltaTime));
-
-        topArmBone.eulerAngles += ((fastSpinSpeed * spinPercentage) + (idleSpinSpeed * (1-spinPercentage))) * Time.deltaTime;
-        topArmBone.localPosition = new Vector3(0, Mathf.Max(-0.084f, percentage * -0.07f), 0);
+        float rotation = Mathf.LerpAngle(spinnerPrev->Rotation.AsFloat, spinner->Rotation.AsFloat, game.InterpolationFactor); 
+        rotator.localRotation = Quaternion.Euler(0, rotation, 0);
     }
 
-    public void OnTriggerExit2D(Collider2D collider) {
-        PlayerController cont = collider.gameObject.GetComponent<PlayerController>();
-        if (cont)
-            playersInside.Remove(cont);
-    }
+    public void OnMarioPlayerUsedSpinner(EventMarioPlayerUsedSpinner e) {
+        if (e.Spinner != entity.EntityRef) {
+            return;
+        }
 
-    public void OnTriggerEnter2D(Collider2D collider) {
-        PlayerController cont = collider.gameObject.GetComponent<PlayerController>();
-        if (cont)
-            playersInside.Add(cont);
+        sfx.PlayOneShot(SoundEffect.World_Spinner_Launch);
+        Instantiate(launchParticlePrefab, transform.position, Quaternion.identity);
     }
 }
